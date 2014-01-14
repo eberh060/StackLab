@@ -15,8 +15,12 @@ public class Stack<T> implements StackIF<T> {
     /**
      * Construct an empty stack.
      */
+	Node top;
+	int size;
+	
     public Stack() {
-        throw new UnsupportedOperationException();
+    	top = null;
+    	size = 0;
     }
 
     /**
@@ -28,7 +32,10 @@ public class Stack<T> implements StackIF<T> {
      *            the list of items to initialize the stack
      */
     public Stack(List<T> items) {
-        throw new UnsupportedOperationException();
+    	for (int i = 0; i < items.size(); i++) {
+    		top = new Node(items.get(i), top);
+    		size++;
+    	}
     }
 
     /**
@@ -37,7 +44,7 @@ public class Stack<T> implements StackIF<T> {
      * @return the number of elements on the stack
      */
     public int size() {
-        throw new UnsupportedOperationException();
+    	return size;
     }
 
     /**
@@ -46,7 +53,7 @@ public class Stack<T> implements StackIF<T> {
      * @return true if the stack is empty, false otherwise
      */
     public boolean isEmpty() {
-        throw new UnsupportedOperationException();
+    	return size == 0;
     }
 
     /**
@@ -56,7 +63,8 @@ public class Stack<T> implements StackIF<T> {
      *            the value to be pushed.
      */
     public void push(T value) {
-        throw new UnsupportedOperationException();
+    	top = new Node(value, top);
+    	size++;
     }
 
     /**
@@ -68,7 +76,14 @@ public class Stack<T> implements StackIF<T> {
      *             if the stack is empty
      */
     public T pop() {
-        throw new UnsupportedOperationException();
+    	if (size > 0) {
+    		T toReturn = (T) top.value;
+    		top = top.child; 
+    		size--;
+    		return toReturn;
+    	} else {
+    		throw new StackUnderflowException();
+    	}
     }
 
     /**
@@ -80,7 +95,11 @@ public class Stack<T> implements StackIF<T> {
      *             if the stack is empty
      */
     public T top() {
-        throw new UnsupportedOperationException();
+    	if (size > 0) {
+    	return (T) top.value;
+    	} else {
+    		throw new StackUnderflowException();
+    	}
     }
 
     /**
@@ -107,4 +126,14 @@ public class Stack<T> implements StackIF<T> {
     public String toString() {
         throw new UnsupportedOperationException();
     }
+    private class Node<T> {
+    	T value;
+    	Node child;
+    	private Node(T value, Node child) {
+    		this.value = value;
+    		this.child = child;
+    	}
+    }
 }
+
+
