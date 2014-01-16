@@ -13,8 +13,11 @@ import umm.softwaredesign.stacklab.StackIF;
  */
 public class Stack<T> implements StackIF<T> {
     /**
-     * Construct an empty stack.
+     * This is the start of our stack. It begins with a Node top that starts at null,
+     * and a int size. When an item is added to the stack it will become the top node,
+     * and the previous top node will become it's child. 
      */
+	
 	Node top;
 	int size;
 	
@@ -38,7 +41,7 @@ public class Stack<T> implements StackIF<T> {
     	}
     }
 
-    /**
+    /** Construct an empty stack.
      * Computes the size of the stack.
      * 
      * @return the number of elements on the stack
@@ -111,7 +114,20 @@ public class Stack<T> implements StackIF<T> {
      *         elements
      */
     public boolean hasElements(List<T> items) {
-        throw new UnsupportedOperationException();
+    	
+    	//Checks to make sure they have the same size before it ever goes into the stack.
+    	if(size != items.size())return false;
+    	
+    	//Compares the stack with the list.
+    	Node current = top;
+    	for(int i = size-1; i >= 0; i--){
+    		if (items.get(i).equals(current.value)){
+    			current = current.child;
+    		} else {
+    			return false;
+    		}
+    	}
+    	return true;
     }
 
     /**
@@ -124,9 +140,32 @@ public class Stack<T> implements StackIF<T> {
      */
     @Override
     public String toString() {
-        throw new UnsupportedOperationException();
+    	//Checks for an empty stack.
+    	if(size == 0){
+    		return "Stack[]";
+    	}
+    	/**
+    	 * If the stack is not empty, adds values of the stack to toPrint
+    	 * with a ", " in between each put inside of Stack[].  
+    	 */
+        Node current = top;
+    	String toPrint = "]";
+    	toPrint = current.value + toPrint;
+    	current = current.child;
+    	while(current != null){
+    		toPrint = current.value + ", " + toPrint;
+    		current = current.child;
+    	}
+    	toPrint = "Stack[" + toPrint;
+    	return toPrint;
     }
-    private class Node<T> {
+    
+    /**
+     * The class Node is our version of a linked list that will be the structure of
+     * the Stack. Each node contains a value (type T) and a child (type Node) which
+     * can be accessed with Node.value and Node.child respectively.
+     */
+    private class Node {
     	T value;
     	Node child;
     	private Node(T value, Node child) {
